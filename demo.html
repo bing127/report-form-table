@@ -3,15 +3,52 @@
   <head>
     <meta charset="utf-8">
     <title>table</title>
+
     <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.9/vue.min.js"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
     <script src="./dist/build.js"></script>
+    <style>
+        html,body{
+            margin: 0;
+            height: 100%;
+        }
+        #app{
+            height: 100%;
+        }
+    </style>
   </head>
   <body>
-    <div id="app"></div>
+    <div id="app">
+        <div class="table">
+            <generator-table :tree_data="jsonData[0]" :deep="0"/>
+        </div>
+    </div>
   </body>
   <script>
       let vm = new Vue({
-          el: "#app"
+          el: "#app",
+          data: {
+            jsonData: [{"type":"row","id":"1","title":"表格","children":[{"id":"d99c13b1deb34d8d9ab089f83d2a4bf5","type":"col","focus":false,"subTitle":"","title":"未命名","width":"50%","height":"40px","subTextAlign":"center","align":"center","fontColor":"#000","fontSize":"15px","fontWeight":"normal","style":{},"isInput":false,"slotType":"slot","params":null,"children":[{"id":"da55ef48722c41d88a3c081b730d8e49","type":"label","focus":false,"subTitle":"","title":"未命名","width":"100%","height":"40px","subTextAlign":"center","align":"center","fontColor":"#000","fontSize":"15px","fontWeight":"normal","style":{},"isInput":false,"slotType":"slot","params":null,"children":[]},{"id":"b5556104d8464ab79c9055986f18717f","type":"label","focus":false,"title":"未命名","width":"100%","height":"40px","subTextAlign":"center","align":"center","fontColor":"#000","fontSize":"15px","fontWeight":"normal","style":{},"isInput":false,"slotType":"slot","params":"aaa","children":[]}]},{"id":"1120acd512484d569e88303d22e1afea","type":"col","focus":false,"subTitle":"","title":"未命名","width":"50%","height":"40px","subTextAlign":"center","align":"center","fontColor":"#000","fontSize":"15px","fontWeight":"normal","style":{},"isInput":false,"slotType":"slot","params":null,"children":[{"id":"ef6f22bca6b14403b434cec1e9795c23","type":"label","focus":false,"subTitle":"","title":"未命名","width":"100%","height":"40px","subTextAlign":"center","align":"center","fontColor":"#000","fontSize":"15px","fontWeight":"normal","style":{},"isInput":false,"slotType":"slot","params":null,"children":[]},{"id":"6ab7bad2c14840e5a3e0885d180c7a55","type":"label","focus":false,"title":"未命名","width":"100%","height":"40px","subTextAlign":"center","align":"center","fontColor":"#000","fontSize":"15px","fontWeight":"normal","style":{},"isInput":false,"slotType":"slot","params":"bbb","children":[]}]}],"focus":false}],
+            data: {
+                aaa:"测试",
+                bbb: [
+                    "asdas",
+                    "asdas1",
+                    "asdas2",
+                    "asdas2",
+                    "asdas2",
+                    "asdas2",
+                    "asdas2",
+                ]
+            }
+          },
+          mounted() {
+            this.$renderTable(this.data,this.jsonData)
+            console.log(this.jsonData)
+          }
       })
   </script>
 </html>

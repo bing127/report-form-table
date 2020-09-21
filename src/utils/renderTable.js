@@ -1,4 +1,4 @@
-export const renderTable = (data,jsonArr) => {
+const renderTable = (data,jsonArr) => {
     const isArray = a => {
         return Object.prototype.toString.call(a).slice(8, -1) === "Array";
     }
@@ -25,5 +25,7 @@ export const renderTable = (data,jsonArr) => {
             }
         }
     }
-    return jsonArr
+    recursiveRender(data,jsonArr)
 }
+
+export default renderTable

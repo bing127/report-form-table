@@ -23,17 +23,12 @@
             colspan="1"
             v-for="item in line"
             :key="item.id"
-            :class="item.focus ? 'high' : ''"
-            @click.stop="handleTable(item)"
             :style="{
               width: typeof item.width != 'undefined' ? item.width : 'auto',
             }"
           >
             <div
-              @mouseover.prevent.stop="handleEnter($event, item)"
-              @mouseleave.prevent.stop="handleLeave(item)"
               v-if="item.type != 'row' && item.type != 'col'"
-              :class="item.focus ? 'high' : ''"
               :style="{
                 borderRight: `${borderWidth}px solid ${borderColor}`,
                 borderBottom: `${borderWidth}px solid ${borderColor}`,
@@ -52,6 +47,7 @@
               <div class="cell" v-if="!item.isInput">
                 <div
                   :style="{
+                    paddingBottom: '1px',
                     textAlign: item.align,
                     fontSize: item.fontSize ? item.fontSize : '14px',
                     fontWeight: item.fontWeight ? item.fontWeight : 'normal',
@@ -60,7 +56,7 @@
                     width: '100%',
                   }"
                 >
-                  <div v-if="item.params" style="height:100%;">
+                  <div v-if="item.params" style="height:100%;height:100%;display:flex;align-items: center;">
                     <ul
                       class="mp-list"
                       v-if="isArray(item.params)"
@@ -70,17 +66,12 @@
                           : item.params.length === 2
                           ? 'mp-list2'
                           : 'mp-list3'
-                      "
-                    >
-                      <li
-                        v-for="(v, k) in item.params"
-                        :key="k"
-                        v-text="v.name"
-                      ></li>
+                      ">
+                      <li v-for="(v, k) in item.params" :key="k" v-text="v"></li>
                     </ul>
                     <ul
                       class="mp-list"
-                      v-if="isObject(item.params)"
+                      v-else-if="isObject(item.params)"
                       :class="
                         objectLength(item.params) <= 1
                           ? 'mp-list1'
@@ -89,20 +80,20 @@
                           : 'mp-list3'
                       "
                     >
-                      <li
-                        v-for="(v, k) of item.params"
-                        :key="k"
-                        v-text="v"
-                      ></li>
+                      <li v-for="(v, k) of item.params" :key="k" v-text="v"></li>
                     </ul>
-                  </div>
-                  <div
-                    v-else
-                    style="height:100%;display:flex;align-items: center;"
-                  >
                     <span
                       :style="{
-                        textAlign: item.subTextAlign,
+                        textAlign: item.align,
+                      }"
+                      v-else
+                      v-html="item.params"
+                    ></span>
+                  </div>
+                  <div v-else style="height:100%;display:flex;align-items: center;">
+                    <span
+                      :style="{
+                        textAlign: item.align,
                       }"
                       v-html="item.title"
                     ></span>
@@ -120,13 +111,13 @@
               </div>
             </div>
             <!--递归调用-->
-            <table-render
+            <generator-table
               v-else
               :border-color="borderColor"
               :border-width="borderWidth"
               :tree_data="item"
               :deep="deep + 1"
-            ></table-render>
+            ></generator-table>
           </td>
         </tr>
       </template>
@@ -135,7 +126,7 @@
 </template>
 <script>
 export default {
-  name: "TableRender",
+  name: "GeneratorTable",
   props: {
     tree_data: Object,
     deep: Number,
@@ -155,17 +146,19 @@ export default {
   },
   computed: {
     for_data() {
-      let type = this.tree_data.type;
-      let data = this.tree_data.children;
-      let result = [];
-      if (type === "row") {
-        result.push(data);
-      } else if (type === "col") {
-        for (let i = 0; i < data.length; i++) {
-          result.push([data[i]]);
+      if (this.tree_data) {
+        let type = this.tree_data.type;
+        let data = this.tree_data.children;
+        let result = [];
+        if (type === "row") {
+          result.push(data);
+        } else if (type === "col") {
+          for (let i = 0; i < data.length; i++) {
+            result.push([data[i]]);
+          }
         }
+        return result;
       }
-      return result;
     },
   },
   methods: {
@@ -200,7 +193,10 @@ ul li {
   list-style: none;
 }
 ul {
+  width: 100%;
   height: 100%;
+  margin: 0;
+  padding: 0;
 }
 .mp-list1 {
   position: relative;
@@ -228,6 +224,7 @@ ul {
   margin-bottom: -1px;
   float: left;
   position: relative;
+  box-sizing: border-box;
   z-index: 10;
   color: #212121;
 }
@@ -252,6 +249,7 @@ ul {
   width: 33.3333333333333333333333333%;
   height: 40px;
   display: flex;
+  box-sizing: border-box;
   justify-content: center;
   align-items: center;
   border-bottom: 1px solid black;
@@ -290,6 +288,7 @@ ul {
   position: relative;
   z-index: 10;
   color: #212121;
+  box-sizing: border-box;
 }
 
 .infinite-split-table {
@@ -304,11 +303,10 @@ ul {
   border-top: 1px solid black;
 }
 .text {
-  box-sizing: border-box;
   border-right: 1px solid black;
   border-bottom: 1px solid black;
   height: 100%;
-  min-height: 50px;
+  min-height: 40px;
   display: flex;
   overflow: hidden;
   box-sizing: border-box;
@@ -349,6 +347,7 @@ textarea:focus {
   flex-direction: column;
   width: 100%;
   height: 100%;
+  padding-bottom: 1px;
 }
 .cell span {
   display: inline-block;
@@ -377,7 +376,7 @@ td {
 .high {
   box-shadow: inset 0px 0px 4px #0f82ff;
 }
-.infinite-split-table{
+.infinite-split-table {
   border-spacing: 0;
 }
 </style>
