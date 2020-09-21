@@ -1,4 +1,4 @@
-export default renderTable = (data,jsonArr) => {
+export const renderTable = (data,jsonArr) => {
     const isArray = a => {
         return Object.prototype.toString.call(a).slice(8, -1) === "Array";
     }
