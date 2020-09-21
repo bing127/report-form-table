@@ -5,6 +5,9 @@ import Design from './src/components/Design'
 import DesignTable from './src/components/DesignTable'
 import GeneratorTable from './src/components/GeneratorTable'
 import Preview from './src/components/preview'
+import BusEvent from './src/utils/bus'
+import RenderTable from './src/utils/renderTable'
+import Print from './src/utils/print'
 
 const components = [
     BasicContainer,
@@ -20,6 +23,10 @@ const install = function(Vue, opts = {}) {
     components.forEach(component => {
       Vue.component(component.name, component);
     });
+
+    Vue.prototype.$renderTable = RenderTable;
+    Vue.prototype.$busEvent = BusEvent;
+    Vue.prototype.$print = Print;
 };
 
 /* istanbul ignore if */
