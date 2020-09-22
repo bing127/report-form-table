@@ -174,9 +174,15 @@ export default {
         }
       })
 
-      if(this.jsonData && this.jsonData.length > 0) {
-        this.tree_data = this.jsonData;
+      
+  },
+  watch: {
+    jsonData(e) {
+      if(e && e.length > 0) {
+        this.tree_data = e;
       }
+      return e;
+    }
   },
   methods: {
     handlePreviewConfirm() {
