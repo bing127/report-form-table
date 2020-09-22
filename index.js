@@ -8,6 +8,7 @@ import Preview from './src/components/preview'
 import BusEvent from './src/utils/bus'
 import RenderTable from './src/utils/renderTable'
 import Print from './src/utils/print'
+import UrlParams from './src/utils/urlParams'
 
 const components = [
     BasicContainer,
@@ -27,6 +28,7 @@ const install = function(Vue, opts = {}) {
     Vue.prototype.$renderTable = RenderTable;
     Vue.prototype.$busEvent = BusEvent;
     Vue.prototype.$print = Print;
+    Vue.prototype.$urlParams = UrlParams;
 };
 
 /* istanbul ignore if */

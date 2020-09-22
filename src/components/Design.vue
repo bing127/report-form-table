@@ -26,8 +26,8 @@
         <el-card class="box-card">
           <div slot="header" class="clearfix box-card-header">
             <span class="title">设计表格</span>
-            <el-button style="float: right;" type="primary" size="small" @click="handleGenerator">生成并预览</el-button
-            >
+            <el-button style="float: right;" type="primary" size="small" @click="handleGenerator">预览</el-button>
+            <el-button style="float: right;" type="primary" plain size="small" @click="handleSubmit">提交</el-button>
           </div>
           <div class="generator-table">
             <div class="generator-table-inner">
@@ -120,6 +120,9 @@ import AttrView from "./DesignAttribute/attrView.vue"
 import TableView from "./DesignAttribute/tableView.vue"
 import Preview from "./preview.vue"
 import Bus from "../utils/bus.js";
+import UrlParams from "../utils/urlParams";
+
+import axios from "axios"
 export default {
   name: "Design",
   components: {
@@ -363,6 +366,19 @@ export default {
         this.previewData = this.tree_data
         this.previewShow = true;
         console.log(JSON.stringify(this.tree_data))
+    },
+    handleSubmit() {
+      const kid = UrlParams('kid');
+      if(kid) {
+        axios.post("/bat-wkflow/form/json/save",{
+          kid,
+          json:JSON.stringify(this.tree_data)
+        }).then(ret => {
+          if(ret) {
+            this.$message.success("提交成功")
+          }
+        })
+      }
     }
   },
 };

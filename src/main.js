@@ -8,6 +8,7 @@ import basicContainer from './components/basic-container/main';
 //注册全局容器
 Vue.component('basicContainer', basicContainer)
 
+
 Vue.use(ElementUI);
 
 new Vue({
