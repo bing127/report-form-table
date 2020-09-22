@@ -131,6 +131,12 @@ export default {
     TableView,
     Preview
   },
+  props: {
+    jsonData: {
+      type: Array,
+      default: () => []
+    }
+  },
   data() {
     return {
       previewShow: false,
@@ -159,7 +165,6 @@ export default {
   },
   mounted() {
       Bus.$on('changeTableAttr',(e) => {
-        console.log(e)
           this.changeTableData(this.tree_data, e)
       })
       Bus.$on('changeTable',(e) => {
@@ -168,6 +173,10 @@ export default {
           width: e.borderWidth
         }
       })
+
+      if(this.jsonData && this.jsonData.length > 0) {
+        this.tree_data = this.jsonData;
+      }
   },
   methods: {
     handlePreviewConfirm() {
@@ -202,6 +211,7 @@ export default {
         for (let i = 0; i < a.length; i++) {
           if (a[i].id === nodeData.id) {
             a[i].params = nodeData.params;
+            a[i].subParams = nodeData.subParams;
             a[i].title = nodeData.title;
             a[i].width = nodeData.width;
             a[i].height = nodeData.height;
@@ -318,6 +328,7 @@ export default {
                     slotType: 'slot',
                     style: {},
                     params: null,
+                    subParams: null,
                     children: []
                 },this.clickNode.currentData.id)
               break;
@@ -331,7 +342,7 @@ export default {
                     title: "未命名",
                     width: "100%",
                     height: "40px",
-                subTextAlign: "center",
+                    subTextAlign: "center",
                     align: "center",
                     fontColor: "#000",
                     fontSize: "15px",
@@ -340,6 +351,7 @@ export default {
                     isInput: false,
                     slotType: 'slot',
                     params: null,
+                    subParams: null,
                     children: []
                 },this.clickNode.currentData.id)
               break;
@@ -370,7 +382,7 @@ export default {
     handleSubmit() {
       const kid = UrlParams('kid');
       if(kid) {
-        axios.post("/bat-wkflow/form/json/save",{
+        axios.post("/oa-wkflow/form/json/save",{
           kid,
           json:JSON.stringify(this.tree_data)
         }).then(ret => {

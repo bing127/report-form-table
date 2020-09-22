@@ -3,6 +3,9 @@
       <el-form-item label="后端对应参数" prop="params">
         <el-input v-model="form.params" size="small" @input="handleChange" placeholder="请输入参数"></el-input>
       </el-form-item>
+      <el-form-item label="小标题参数" prop="subParams">
+        <el-input v-model="form.subParams" size="small" @input="handleChange" placeholder="请输入参数"></el-input>
+      </el-form-item>
       <el-form-item label="标题" prop="title">
         <el-input v-model="form.title" size="small" @input="handleChange" placeholder="请输入标题"></el-input>
       </el-form-item>
@@ -149,6 +152,7 @@ export default {
         fontWeight: "normal",
         id: "",
         pId: "",
+        subParams: null,
         input: false,
         textarea: false,
         isInput: false
@@ -177,7 +181,9 @@ export default {
         pId: e.pId,
         input: e.isInput ? ( e.slotType === 'input' ? true : false ) : false,
         textarea: e.isInput ? ( e.slotType === 'textarea' ? true : false ) : false,
-        isInput: e.isInput ? true : false
+        isInput: e.isInput ? true : false,
+        subParams: e.subParams,
+        params: e.params
       };
       this.form = jsonData
       this.oldForm = jsonData

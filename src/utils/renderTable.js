@@ -20,6 +20,7 @@ const renderTable = (data,jsonArr) => {
     const recursiveRender = (data,jsonArr) => {
         for(let i of jsonArr) {
             i.params = data[i.params]
+            i.subParams = data[i.subParams]
             if(isArray(i.children)) {
                 recursiveRender(data,i.children)
             }

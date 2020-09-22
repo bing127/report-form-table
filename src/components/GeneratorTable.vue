@@ -100,14 +100,10 @@
                   </div>
                 </div>
 
-                <span
-                  v-if="item.subTitle && item.subTitle.length"
-                  class="sub"
-                  v-html="item.subTitle"
-                  :style="{
-                    textAlign: item.subTextAlign,
-                  }"
-                ></span>
+                <span v-if="item.subTitle && item.subTitle.length" class="sub" v-html="item.subTitle" :style="{
+                      textAlign: item.subTextAlign}"></span>
+                    <span v-if="item.subParams && item.subParams.length" class="sub" v-html="item.subParams" :style="{
+                    textAlign: item.subTextAlign}"></span>
               </div>
             </div>
             <!--递归调用-->
