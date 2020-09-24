@@ -57,29 +57,28 @@
                   }"
                 >
                   <div v-if="item.params" style="height:100%;height:100%;display:flex;align-items: center;">
-                    <ul
+                    <div class="list" v-if="isArray(item.params)">
+                      <div v-if="item.titleDataType === 'list'" v-for="(arrItem,arrIndex) in item.params" :key="arrIndex" class="list-cell">
+                          <div class="list-cell-item" v-for="(cellItem,cellIndex) of arrItem" :key="cellItem"  v-if="isListChild(cellIndex)">
+                            <span v-text="cellItem"></span>
+                          </div>
+                        </div>
+                      <ul class="mp-list" v-else-if="item.titleDataType === 'array'"   :class="objectLength(item.params) <= 1 ? 'mp-list1' : objectLength(item.params) === 2 ? 'mp-list2' : 'mp-list3'">
+                        <li v-for="(arrItem,arrIndex) in item.params" :key="arrIndex">
+                          <span v-for="(cellItem,cellIndex) of arrItem" :key="cellItem">
+                            <span v-if="isArrayChild(cellIndex)" v-text="cellItem"></span>
+                          </span>
+                        </li>
+                      </ul>
+                    </div>
+                    <!-- <ul
                       class="mp-list"
-                      v-if="isArray(item.params)"
-                      :class="
-                        item.params.length <= 1
-                          ? 'mp-list1'
-                          : item.params.length === 2
-                          ? 'mp-list2'
-                          : 'mp-list3'
-                      ">
+                       :class="item.params.length <= 1 ? 'mp-list1' : item.params.length === 2 ? 'mp-list2' : 'mp-list3'">
                       <li v-for="(v, k) in item.params" :key="k" v-text="v"></li>
-                    </ul>
+                    </ul> -->
                     <ul
                       class="mp-list"
-                      v-else-if="isObject(item.params)"
-                      :class="
-                        objectLength(item.params) <= 1
-                          ? 'mp-list1'
-                          : objectLength(item.params) === 2
-                          ? 'mp-list2'
-                          : 'mp-list3'
-                      "
-                    >
+                      v-else-if="isObject(item.params)"  :class="objectLength(item.params) <= 1 ? 'mp-list1' : objectLength(item.params) === 2 ? 'mp-list2' : 'mp-list3'">
                       <li v-for="(v, k) of item.params" :key="k" v-text="v"></li>
                     </ul>
                     <span
@@ -180,6 +179,21 @@ export default {
       } else {
         return false;
       }
+    },
+    isListData(e) {
+      let reg = /oa-list-\d/ig
+      return reg.test(e)
+    },
+    isListChild(e) {
+      console.log(e)
+      return e.includes('oa-list')
+    },
+    isArrayData(e) {
+      let reg = /oa-array-\d/ig
+      return reg.test(e)
+    },
+    isArrayChild(e) {
+      return e.includes('oa-array')
     },
   },
 };
@@ -374,5 +388,29 @@ td {
 }
 .infinite-split-table {
   border-spacing: 0;
+}
+.list{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .list-cell{
+    width: 50%;
+    border-right: 1px solid black;
+    &:last-child{
+        border: none;
+      }
+    .list-cell-item{
+      border-bottom: 1px solid black;
+      min-height: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      &:last-child{
+        border-bottom: none;
+      }
+    }
+    
+  }
 }
 </style>

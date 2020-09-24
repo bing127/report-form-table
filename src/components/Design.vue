@@ -26,8 +26,10 @@
         <el-card class="box-card">
           <div slot="header" class="clearfix box-card-header">
             <span class="title">设计表格</span>
-            <el-button style="float: right;" type="primary" size="small" @click="handleGenerator">预览</el-button>
-            <el-button style="float: right;" type="primary" plain size="small" @click="handleSubmit">提交</el-button>
+            <span>
+              <el-button type="primary" size="small" @click="handleGenerator">预览</el-button>
+              <el-button type="primary" plain size="small" @click="handleSubmit">提交</el-button>
+            </span>
           </div>
           <div class="generator-table">
             <div class="generator-table-inner">
@@ -335,6 +337,8 @@ export default {
                     style: {},
                     params: null,
                     subParams: null,
+                    titleDataType:'text',
+                    subDataType:'text',
                     children: []
                 },this.clickNode.currentData.id)
               break;
@@ -358,6 +362,8 @@ export default {
                     slotType: 'slot',
                     params: null,
                     subParams: null,
+                    titleDataType:'text',
+                    subDataType:'text',
                     children: []
                 },this.clickNode.currentData.id)
               break;
@@ -386,6 +392,7 @@ export default {
         console.log(JSON.stringify(this.tree_data))
     },
     handleSubmit() {
+      console.log(JSON.stringify(this.tree_data))
       const kid = UrlParams('kid');
       if(kid) {
         axios.post("/oa-wkflow/form/json/save",{

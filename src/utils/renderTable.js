@@ -16,11 +16,20 @@ const renderTable = (data,jsonArr) => {
         console.warn(`error，template data must is Array，It cannot be ${getType(jsonArr)}`)
         return false;
     }
-    
+    const addTag = e => {
+        if(!e) {
+            return 'text';
+        }
+        return e.split('-')[1];
+    }
+
     const recursiveRender = (data,jsonArr) => {
         for(let i of jsonArr) {
+            i.titleDataType = addTag(i.params)
+            i.subDataType = addTag(i.subParams)
             i.params = data[i.params]
             i.subParams = data[i.subParams]
+            
             if(isArray(i.children)) {
                 recursiveRender(data,i.children)
             }
