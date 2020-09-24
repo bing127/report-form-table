@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import Design from "./components/Design"
+import Design from "./components/test"
 export default {
   name: 'app',
   components: {

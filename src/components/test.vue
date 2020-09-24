@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import GeneratorTable from "./GeneratorTable";
+import GeneratorTable from "./DesignTable";
 import RenderFunc from "../utils/renderTable";
 export default {
   components: {
@@ -173,7 +173,7 @@ export default {
   },
   mounted() {
     RenderFunc(this.jsonList, this.data);
-    // console.log(JSON.stringify(this.data))
+    console.log(JSON.stringify(this.data))
   },
 };
 </script>

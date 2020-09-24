@@ -63,29 +63,22 @@
                     }">
                           <div v-if="item.params" style="height:100%;height:100%;display:flex;align-items: center;">
                     <div class="list" v-if="isArray(item.params)">
-                      <div v-if="item.titleDataType === 'list'" v-for="(arrItem,arrIndex) in item.params" :key="arrIndex" class="list-cell">
-                          <div class="list-cell-item" v-for="(cellItem,cellIndex) of arrItem" :key="cellItem"  v-if="isListChild(cellIndex)">
-                            <span v-text="cellItem"></span>
-                          </div>
+                      <div class="list" v-if="item.titleDataType === 'list'">
+                         <div  v-for="(arrItem,arrIndex) in item.params" :key="arrIndex" class="list-cell">
+                            <div class="list-cell-item" v-for="(v,k,i) in filterListChild(arrItem)" :key="i" :style="{ height: `${ 100 / Object.getOwnPropertyNames(filterListChild(arrItem)).length}%` }">
+                              <span v-text="v"></span>
+                            </div>
                         </div>
-                      <ul class="mp-list" v-else-if="item.titleDataType === 'array'"   :class="objectLength(item.params) <= 1 ? 'mp-list1' : objectLength(item.params) === 2 ? 'mp-list2' : 'mp-list3'">
+                      </div>
+                     
+                      <ul class="mp-list" 
+                        v-else-if="item.titleDataType === 'array'"  
+                        :class="objectLength(item.params) <= 1 ? 'mp-list1' : objectLength(item.params) === 2 ? 'mp-list2' : 'mp-list3'">
                         <li v-for="(arrItem,arrIndex) in item.params" :key="arrIndex">
-                          <span v-for="(cellItem,cellIndex) of arrItem" :key="cellItem">
-                            <span v-if="isArrayChild(cellIndex)" v-text="cellItem"></span>
-                          </span>
+                          <span v-for="(v,k,i) in filterArrayChild(arrItem)" :key="i" v-text="v"></span>
                         </li>
                       </ul>
                     </div>
-                    <!-- <ul
-                      class="mp-list"
-                       :class="item.params.length <= 1 ? 'mp-list1' : item.params.length === 2 ? 'mp-list2' : 'mp-list3'">
-                      <li v-for="(v, k) in item.params" :key="k" v-text="v"></li>
-                    </ul> -->
-                    <ul
-                      class="mp-list"
-                      v-else-if="isObject(item.params)"  :class="objectLength(item.params) <= 1 ? 'mp-list1' : objectLength(item.params) === 2 ? 'mp-list2' : 'mp-list3'">
-                      <li v-for="(v, k) of item.params" :key="k" v-text="v"></li>
-                    </ul>
                     <span
                       :style="{
                         textAlign: item.align,
@@ -181,6 +174,62 @@ export default {
     },
     handleLeave(e) {
       e.focus = false
+    },
+    isEmpty(e) {
+      if (
+        !e ||
+        e === null ||
+        e === undefined ||
+        e === "" ||
+        e === {} ||
+        e === []
+      ) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    isListData(e) {
+      let reg = /oa-list-\d/ig
+      return reg.test(e)
+    },
+    isListChild(e) {
+      if(!e) {
+        return null
+      }
+      return e.includes('oa-list')
+    },
+    isArrayData(e) {
+      let reg = /oa-array-\d/ig
+      return reg.test(e)
+    },
+    isArrayChild(e) {
+      if(!e) {
+        return null
+      }
+      return e.includes('oa-array')
+    },
+    filterListChild(e) {
+      let json = {}
+      for(let item of Object.entries(e)) {
+         if(this.isListChild(item[0])) {
+            json = Object.assign(json,{
+              [item[0]]: item[1]
+            })
+         }
+      }
+      return json;
+    },
+    filterArrayChild(e) {
+      let json = {}
+      for(let item of Object.entries(e)) {
+         if(this.isArrayChild(item[0])) {
+            json = Object.assign(json,{
+              [item[0]]: item[1]
+            })
+         }
+      }
+      return json;
     }
   },
 };
@@ -375,5 +424,31 @@ td {
 }
 .infinite-split-table {
   border-spacing: 0;
+}
+.list{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+  .list-cell{
+    width: 50%;
+    border-right: 1px solid black;
+    height: 100%;
+    &:last-child{
+        border: none;
+      }
+    .list-cell-item{
+      border-bottom: 1px solid black;
+      min-height: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      &:last-child{
+        border-bottom: none;
+      }
+    }
+    
+  }
 }
 </style>
