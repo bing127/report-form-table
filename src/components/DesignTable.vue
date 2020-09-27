@@ -89,7 +89,7 @@
                   </div>
                           <div v-else style="height:100%;display:flex;align-items: center;" >
                             <span :style="{
-                      textAlign: item.align}" v-html="item.title"></span>
+                      textAlign: item.align,padding: '5px'}" v-html="item.title"></span>
                           </div>
                     </div>
                     
@@ -432,7 +432,7 @@ td {
   align-items: center;
   height: 100%;
   .list-cell{
-    width: 50%;
+    width: 100%;
     border-right: 1px solid black;
     height: 100%;
     &:last-child{

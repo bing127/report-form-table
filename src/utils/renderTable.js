@@ -23,6 +23,18 @@ const renderTable = (data,jsonArr) => {
         return e.split('-')[1];
     }
 
+    /**
+     * data 原始数据
+     * jsonArr 需要融合的数据
+    */
+    // const findSameKey = (data,jsonArr) => {
+    //     for(let i of jsonArr) {
+    //         if(data[i.params] && data[i.params] === jsonArr[i.params]) {
+                
+    //         }
+    //     }
+    // }
+
     const recursiveRender = (data,jsonArr) => {
         for(let i of jsonArr) {
             i.titleDataType = addTag(i.params)
